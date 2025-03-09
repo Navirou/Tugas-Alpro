@@ -17,12 +17,12 @@ StructFilm film[5] = {{"Dear Nathan", "K001", 8.9},
 void quick_sort (StructFilm *film, int awal, int akhir) {
     int low = awal;
     int high = akhir;
-    int pivot = film[(awal + akhir) / 2].rating;
+    float pivot = film[(awal + akhir) / 2].rating;
     int temp;
     do {
-    while (film[low].rating > pivot)
+    while (film[low].rating < pivot)
         low++;
-    while (film[high].rating < pivot)
+    while (film[high].rating > pivot)
         high--;
     if (low <= high) {
         swap(film[low], film[high]);
@@ -50,8 +50,8 @@ int main() {
         cout << "| [1] Tampilkan Film         |" << endl;
         cout << "| [2] Cari Berdasarkan Kode  |" << endl;
         cout << "| [3] Cari Berdasarkan Judul |" << endl;
-        cout << "| [4] Sort Rating Film (asc)  |" << endl;                
-        cout << "| [5] Sort Rating Film (desc) |" << endl;
+        cout << "| [4] Sort Rating Film (asc) |" << endl;                
+        cout << "| [5] Sort Rating Film (desc)|" << endl;
         cout << "| [0] Keluar                 |" << endl;
         cout << "==============================" << endl;
         cout << "Pilih menu : ";
@@ -145,32 +145,11 @@ int main() {
             system("pause");
             break;
 
-            case 4: {
-                int c = jumlah;
-                for (int i = 0; i < c - 1; i++) {
-                    for (int j = 0; j < c - 1 - i; j++) {
-                        if (film[j].rating > film[j + 1].rating) {
-                            swap(film[j], film[j + 1]);
-                        }
-                    }
-                }
-                cout << "\nData yang diurutkan (Ascending) :" << endl;
-                cout << setfill('=') << setw(30) << "=" << endl;
-                cout << setfill(' ');
-                for (int i = 0; i < c; i++) {
-                    cout << setw(15) << left << film[i].judul << setw(10) << film[i].kode << setw(5) << film[i].rating << endl;
-                }
-                cout << setfill('=') << setw(30) << "=" << endl;
-                cout << setfill(' ');
-            }
-            system("pause");
-            break;
- 
-            case 5:{
+            case 4:{
                 int awal = 0;
                 int akhir = jumlah - 1;
                 quick_sort(film, awal, akhir);
-                cout << "\nData yang diurutkan (descending) :" << endl;
+                cout << "\nData yang diurutkan (Ascending) :" << endl;
                 cout << setfill('=') << setw(30) << "=" << endl;
                 cout << setfill(' ');
                 for (int i = 0; i < jumlah; i++)
@@ -182,6 +161,28 @@ int main() {
             }
             system("pause");
             break;
+
+            case 5: {
+                int c = jumlah;
+                for (int i = 0; i < c - 1; i++) {
+                    for (int j = 0; j < c - 1 - i; j++) {
+                        if (film[j].rating < film[j + 1].rating) {
+                            swap(film[j], film[j + 1]);
+                        }
+                    }
+                }
+                cout << "\nData yang diurutkan (Descending) :" << endl;
+                cout << setfill('=') << setw(30) << "=" << endl;
+                cout << setfill(' ');
+                for (int i = 0; i < c; i++) {
+                    cout << setw(15) << left << film[i].judul << setw(10) << film[i].kode << setw(5) << film[i].rating << endl;
+                }
+                cout << setfill('=') << setw(30) << "=" << endl;
+                cout << setfill(' ');
+            }
+            system("pause");
+            break;
+            
 
             case 0: {
                 cout << "gapunya duit yaa? kok cuma liat liat doang.." << endl;
@@ -195,5 +196,4 @@ int main() {
     
 
 }
-
 
