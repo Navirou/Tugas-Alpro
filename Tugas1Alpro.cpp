@@ -40,6 +40,7 @@ int main() {
     film;
     int jumlah = sizeof(film) /sizeof(film[0]);
     int pilihan;
+    StructFilm* ptr = film;
     string cari;
 
     while (true)
@@ -64,16 +65,10 @@ int main() {
                 cout << left << setw(20) << "Judul" << setw(10) << "Kode" << setw(10) << "Rating" << endl;
                 cout << setfill('=') << setw(40) << "=" << endl;
                 cout << setfill(' ');
-                cout << left << setw(20) << film[0].judul << setw(10) << film[0].kode
-                << setw(10) << film[0].rating << endl;
-                cout << left << setw(20) << film[1].judul << setw(10) << film[1].kode
-                << setw(10) << film[1].rating << endl;
-                cout << left << setw(20) << film[2].judul << setw(10) << film[2].kode
-                << setw(10) << film[2].rating << endl;
-                cout << left << setw(20) << film[3].judul << setw(10) << film[3].kode
-                << setw(10) << film[3].rating << endl;
-                cout << left << setw(20) << film[4].judul << setw(10) << film[4].kode
-                << setw(10) << film[4].rating << endl;
+                for (int i = 0; i < jumlah; i++) {
+                    cout << left << setw(20) << (ptr + i)->judul << setw(10) << (ptr + i)->kode
+                    << setw(10) << (ptr + i)->rating << endl;
+                }
                 cout << setfill('=') << setw(40) << "=" << endl;
             }
             system("pause");
@@ -150,13 +145,13 @@ int main() {
                 int akhir = jumlah - 1;
                 quick_sort(film, awal, akhir);
                 cout << "\nData yang diurutkan (Ascending) :" << endl;
-                cout << setfill('=') << setw(30) << "=" << endl;
+                cout << setfill('=') << setw(35) << "=" << endl;
                 cout << setfill(' ');
-                for (int i = 0; i < jumlah; i++)
-                {
-                    cout << setw(15) << left << film[i].judul << setw(10) << film[i].kode << setw(5) << film[i].rating << endl;
+                for (int i = 0; i < jumlah; i++) {
+                    cout << left << setw(20) << (ptr + i)->judul << setw(10) << (ptr + i)->kode
+                    << setw(10) << (ptr + i)->rating << endl;
                 }
-                cout << setfill('=') << setw(30) << "=" << endl;
+                cout << setfill('=') << setw(35) << "=" << endl;
                 cout << setfill(' ');
             }
             system("pause");
@@ -172,12 +167,13 @@ int main() {
                     }
                 }
                 cout << "\nData yang diurutkan (Descending) :" << endl;
-                cout << setfill('=') << setw(30) << "=" << endl;
+                cout << setfill('=') << setw(35) << "=" << endl;
                 cout << setfill(' ');
-                for (int i = 0; i < c; i++) {
-                    cout << setw(15) << left << film[i].judul << setw(10) << film[i].kode << setw(5) << film[i].rating << endl;
+                for (int i = 0; i < jumlah; i++) {
+                    cout << left << setw(20) << (ptr + i)->judul << setw(10) << (ptr + i)->kode
+                    << setw(10) << (ptr + i)->rating << endl;
                 }
-                cout << setfill('=') << setw(30) << "=" << endl;
+                cout << setfill('=') << setw(35) << "=" << endl;
                 cout << setfill(' ');
             }
             system("pause");
