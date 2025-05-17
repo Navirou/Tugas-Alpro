@@ -27,10 +27,6 @@ struct stack
     stack *next;
 };
 
-// const int MAX_HISTORY = 100;
-// riwayat history[MAX_HISTORY];
-// int count = 0;
-
 queue *depan, *belakang;
 stack *awal, *top = NULL;
 
