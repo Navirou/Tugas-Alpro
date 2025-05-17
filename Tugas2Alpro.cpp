@@ -113,7 +113,7 @@ void cetakqueue()
         cout << "Antrean kosong!" << endl;
         return;
     }
-    cout << "Antrean : " << endl;
+    cout << "\n======= ANTREAN =======\n";
     cout << "------------------------\n";
     while (bantu != NULL)
     {
@@ -179,7 +179,7 @@ void tampilkanHistory()
     }
 
     cout << "\n===== HISTORY PESANAN =====\n";
-    cout << "Menampilkan " << count << " pesanan terakhir yang dilayani:\n\n";
+    cout << "Menampilkan " << count << " pesanan terakhir yang dilayani:\n" << endl;
 
     for (int i = 0; i < count; i++)
     {
