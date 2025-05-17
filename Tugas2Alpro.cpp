@@ -122,6 +122,7 @@ void cetakqueue()
         cout << bantu->pelanggan->jenis_roti << endl;
         cout << bantu->pelanggan->harga << endl;
         cout << "------------------------\n";
+        i++;
         bantu = bantu->next;
     }
 }
@@ -179,7 +180,8 @@ void tampilkanHistory()
     }
 
     cout << "\n===== HISTORY PESANAN =====\n";
-    cout << "Menampilkan " << count << " pesanan terakhir yang dilayani:\n" << endl;
+    cout << "Menampilkan " << count << " pesanan terakhir yang dilayani:\n"
+         << endl;
 
     for (int i = 0; i < count; i++)
     {
