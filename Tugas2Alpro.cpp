@@ -14,12 +14,6 @@ struct queue
     queue *next;
 };
 
-struct stack
-{
-    pelanggan *pelanggan;
-    stack *next;
-};
-
 struct riwayat
 {
     string nama;
@@ -27,12 +21,28 @@ struct riwayat
     int harga;
 };
 
-const int MAX_HISTORY = 100;
-riwayat history[MAX_HISTORY];
-int count = 0;
+struct stack
+{
+    riwayat *riwayat;
+    stack *next;
+};
+
+// const int MAX_HISTORY = 100;
+// riwayat history[MAX_HISTORY];
+// int count = 0;
 
 queue *depan, *belakang;
-stack *top = NULL;
+stack *awal, *top = NULL;
+
+void buatstack()
+{
+    awal = top = NULL;
+}
+
+bool stackkosong()
+{
+    return awal == NULL;
+}
 
 void buatqueue()
 {
@@ -63,16 +73,13 @@ void enqueue(string nama, string jenis_roti, int harga)
         belakang->next = NB;
     }
     belakang = NB;
-
-    stack *NS = new stack;
-    NS->pelanggan = NB->pelanggan;
-    NS->next = top;
-    top = NS;
     cout << nama << " berhasil ditambahkan ke antrean!" << endl;
 }
 
 void dequeue()
 {
+    stack *NS = new stack();
+    NS->riwayat = new riwayat;
     if (queuekosong())
     {
         cout << "Antrean kosong!" << endl;
@@ -81,18 +88,21 @@ void dequeue()
     {
         queue *hapus = depan;
 
-        if (count < MAX_HISTORY)
+        NS->riwayat->nama = hapus->pelanggan->nama;
+        NS->riwayat->jenis_roti = hapus->pelanggan->jenis_roti;
+        NS->riwayat->harga = hapus->pelanggan->harga;
+        NS->next = NULL;
+        cout << "Pesanan atas nama " << hapus->pelanggan->nama << " telah dilayani dan disimpan ke history." << endl;
+        if (stackkosong())
         {
-            history[count].nama = hapus->pelanggan->nama;
-            history[count].jenis_roti = hapus->pelanggan->jenis_roti;
-            history[count].harga = hapus->pelanggan->harga;
-            count++;
-            cout << "Pesanan atas nama " << hapus->pelanggan->nama << " telah dilayani dan disimpan ke history." << endl;
+            awal = top = NS;
         }
         else
         {
-            cout << "History penuh, pesanan dilayani tetapi tidak disimpan ke history." << endl;
+            NS->next = awal;
+            awal = NS;
         }
+
         depan = depan->next;
         if (depan == NULL)
         {
@@ -118,79 +128,67 @@ void cetakqueue()
     while (bantu != NULL)
     {
         cout << "Antrean #" << (i + 1) << endl;
-        cout << bantu->pelanggan->nama << endl;
-        cout << bantu->pelanggan->jenis_roti << endl;
-        cout << bantu->pelanggan->harga << endl;
+        cout << "Nama       : " << bantu->pelanggan->nama << endl;
+        cout << "Jenis Roti : " << bantu->pelanggan->jenis_roti << endl;
+        cout << "Harga      : Rp" << bantu->pelanggan->harga << ",00" << endl;
         cout << "------------------------\n";
-        i++;
         bantu = bantu->next;
     }
 }
 
 void batalkanPesanan()
 {
-    if (top == NULL)
-    {
-        cout << "Antrean kosong!" << endl;
-        return;
-    }
-
-    pelanggan *batal = top->pelanggan;
-    string nama_dibatalkan = batal->nama;
-
-    stack *temp = top;
-    top = top->next;
-    delete temp;
-
     if (queuekosong())
     {
         cout << "Antrean kosong!" << endl;
         return;
     }
 
-    queue *current = depan;
-    while (current->next != NULL && current->next->pelanggan != batal)
+    if (depan == belakang)
     {
-        current = current->next;
+        delete depan->pelanggan;
+        delete depan;
+        depan = NULL;
+        belakang = NULL;
+        return;
     }
 
-    if (current->next != NULL)
+    queue *bantu = depan;
+    while (bantu->next != belakang)
     {
-        queue *temp_queue = current->next;
-        current->next = temp_queue->next;
-
-        if (temp_queue == belakang)
-        {
-            belakang = current;
-        }
-
-        delete temp_queue->pelanggan;
-        delete temp_queue;
+        bantu = bantu->next;
     }
 
-    cout << "Pesanan atas nama " << nama_dibatalkan << " telah dibatalkan." << endl;
+    delete belakang->pelanggan;
+    delete belakang;
+    belakang = bantu;
+    belakang->next = NULL;
+
+    cout << "Pesanan terakhir telah dibatalkan." << endl;
 }
 
 void tampilkanHistory()
 {
-    if (count == 0)
+    int count = 0;
+    stack *bantu = awal;
+    if (stackkosong())
     {
-        cout << "Belum ada riwayat pesanan!" << endl;
+        cout << "History Kosong!" << endl;
         return;
     }
-
-    cout << "\n===== HISTORY PESANAN =====\n";
-    cout << "Menampilkan " << count << " pesanan terakhir yang dilayani:\n"
-         << endl;
-
-    for (int i = 0; i < count; i++)
+    cout << "\n===== HISTORY PESANAN =====\n"; // dari yang terbaru ke yang lama
+    cout << "------------------------\n";
+    while (bantu != NULL)
     {
-        cout << "Pesanan #" << (i + 1) << endl;
-        cout << "Nama: " << history[i].nama << endl;
-        cout << "Jenis Roti: " << history[i].jenis_roti << endl;
-        cout << "Harga: Rp" << history[i].harga << endl;
+        cout << "Pesanan #" << (count + 1) << endl;
+        cout << "Nama       : " << bantu->riwayat->nama << endl;
+        cout << "Jenis Roti : " << bantu->riwayat->jenis_roti << endl;
+        cout << "Harga      : Rp" << bantu->riwayat->harga << ",00" << endl;
         cout << "------------------------\n";
+        bantu = bantu->next;
+        count++;
     }
+    cout << endl;
 }
 
 int main()
@@ -208,7 +206,7 @@ int main()
         cout << "| [2] Layani Pembeli      |" << endl;
         cout << "| [3] Tampilkan Pesanan   |" << endl;
         cout << "| [4] Batalkan Pesanan    |" << endl;
-        cout << "| [5] History Pesanan     |" << endl;
+        cout << "| [5] History Terbaru     |" << endl;
         cout << "| [0] Keluar              |" << endl;
         cout << "===========================" << endl;
         cout << "Pilih menu : ";
